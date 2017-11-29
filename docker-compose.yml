@@ -1,0 +1,22 @@
+version: '3.4'
+services:
+  php:
+    build: ./php
+    networks:
+        - main
+  nginx:
+    build: ./nginx
+    volumes:
+      - /home/www:/var/www
+    ports:
+      - "8080:80"
+    networks:
+        - main
+  postgres:
+    build: ./postgres
+    networks:
+        - main
+
+
+networks:
+  main:
