@@ -1,5 +1,0 @@
-upstream php-fpm
-{
-    # PHP5-FPM сервер
-    server unix:/run/php/php5.6-fpm.sock;
-}

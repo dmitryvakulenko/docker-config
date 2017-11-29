@@ -6,8 +6,6 @@ services:
         - main
   nginx:
     build: ./nginx
-    volumes:
-      - /home/www:/var/www
     ports:
       - "8080:80"
     networks:
