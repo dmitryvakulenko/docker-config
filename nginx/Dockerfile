@@ -1,4 +1,5 @@
 FROM nginx:stable
-# VOLUME /var/www
-ADD ./config /etc/nginx/conf.d
-EXPOSE 80
+
+ADD ./site.conf.dist /etc/nginx/conf.d
+ADD ./start_nginx.sh /
+CMD bash /start_nginx.sh

@@ -1,0 +1,42 @@
+upstream php-fpm
+{
+    server php:9000;
+}
+
+server {
+	listen 80;
+
+	root /app/web;
+	index app_dev.php app.php;
+	server_name ${NGINX_HOST};
+
+	location / {
+        try_files ${DOLLAR}uri @rewriteapp;
+	}
+
+	location @rewriteapp {
+		if (-f $document_root/maintenance.html) {
+		    return 503;
+		}
+		rewrite ^(.*)$ /app_dev.php/$1;
+	}
+
+    location ~ ^/(app_dev)\.php(/|$) {
+        fastcgi_pass php-fpm;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME ${DOLLAR}document_root${DOLLAR}fastcgi_script_name;
+        fastcgi_param HTTPS off;
+        fastcgi_read_timeout 300;
+
+        error_page 403 /static/error/403.html;
+        error_page 404 /static/error/404.html;
+        error_page 500 /static/error/500.html;
+        error_page 502 /static/error/502.html;
+        error_page 503 /static/error/503.html;
+        error_page 504 /static/error/504.html;
+    }
+
+    error_log /var/log/nginx/${NGINX_HOST}_error.log;
+    access_log /var/log/nginx/${NGINX_HOST}_access.log;
+}
