@@ -1,0 +1,12 @@
+#!/bin/bash
+
+mkdir -p /var/www/.ssh
+cp /run/secrets/git_key /var/www/.ssh/id_rsa
+chown www-data:www-data -R /var/www/.ssh
+
+if [ -n "$HOST_GROUP_ID" ]; then
+    GROUP = "$(cat /etc/group | grep $HOST_GROUP_ID | cut -d ':' -f 1)"
+
+fi
+
+docker-php-entrypoint "$@"

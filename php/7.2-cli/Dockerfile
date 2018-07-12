@@ -12,10 +12,11 @@ RUN apt-get update && apt-get install -y \
         libxml2-dev \
         libicu-dev \
         git \
-	&& docker-php-ext-install pdo pdo_pgsql gd pcntl mcrypt curl xml mbstring soap zip dom intl bcmath \
+	&& docker-php-ext-install pdo pdo_pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext \
 	&& pecl install redis \
 	&& pecl install xdebug \
 	&& pecl install mongodb \
+	&& pecl install mcrypt-1.0.1 \
 	&& docker-php-ext-enable redis xdebug mongodb
 
 RUN apt-get autoclean
@@ -26,9 +27,9 @@ RUN chown -R www-data:www-data /usr/local/bin/composer
 RUN mkdir -p /var/www/.composer
 RUN chown -R www-data:www-data /var/www/.composer
 
-ADD ../config/php.ini /usr/local/etc/php/
+ADD php.ini /usr/local/etc/php/
 
-COPY ../config/start-php /usr/local/bin
+ADD start-php /usr/local/bin
 RUN chmod a+x /usr/local/bin/start-php
 
 EXPOSE 9000
