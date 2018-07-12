@@ -11,12 +11,10 @@ RUN apt-get update && apt-get install -y \
         libpq-dev \
         libxml2-dev \
         libicu-dev \
+        libmagickwand-6.q16-3 \
         git \
 	&& docker-php-ext-install pdo pdo_pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext \
-	&& pecl install redis \
-	&& pecl install xdebug \
-	&& pecl install mongodb \
-	&& pecl install mcrypt-1.0.1 \
+	&& pecl install redis redis xdebug mongodb mcrypt-1.0.1 \
 	&& docker-php-ext-enable redis xdebug mongodb
 
 RUN apt-get autoclean

@@ -13,9 +13,7 @@ RUN apt-get update && apt-get install -y \
         libicu-dev \
         git \
 	&& docker-php-ext-install pdo pdo_pgsql gd pcntl mcrypt curl xml mbstring soap zip dom intl bcmath gettext \
-	&& pecl install redis \
-	&& pecl install xdebug \
-	&& pecl install mongodb \
+	&& pecl install redis xdebug mongodb \
 	&& docker-php-ext-enable redis xdebug mongodb
 
 RUN apt-get autoclean
