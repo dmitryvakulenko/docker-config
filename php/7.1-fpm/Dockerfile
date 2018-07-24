@@ -14,20 +14,16 @@ RUN apt-get update && apt-get install -y \
         git \
 	&& docker-php-ext-install pdo pdo_pgsql gd pcntl mcrypt curl xml mbstring soap zip dom intl bcmath gettext \
 	&& pecl install redis xdebug mongodb \
-	&& docker-php-ext-enable redis xdebug mongodb
+	&& docker-php-ext-enable redis xdebug mongodb \
+    && apt-get autoclean \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && chown -R www-data:www-data /usr/local/bin/composer \
+    && mkdir -p /var/www/.composer \
+    && chown -R www-data:www-data /var/www/.composer
 
-RUN apt-get autoclean
-
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN chown -R www-data:www-data /usr/local/bin/composer
-
-RUN mkdir -p /var/www/.composer
-RUN chown -R www-data:www-data /var/www/.composer
-
-ADD www.conf /usr/local/etc/php-fpm.d/
-ADD php.ini /usr/local/etc/php/
-
-ADD start-php /usr/local/bin
+COPY www.conf /usr/local/etc/php-fpm.d/
+COPY php.ini /usr/local/etc/php/
+COPY start-php /usr/local/bin
 RUN chmod a+x /usr/local/bin/start-php
 
 EXPOSE 9000
