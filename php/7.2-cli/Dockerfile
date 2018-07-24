@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 	&& docker-php-ext-install pdo pdo_pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext \
 	&& pecl install redis redis xdebug mongodb mcrypt-1.0.1 \
 	&& docker-php-ext-enable redis xdebug mongodb \
-    && apt-get autoclean \
+    && apt-get clean && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && chown -R www-data:www-data /usr/local/bin/composer \
     && mkdir -p /var/www/.composer \
