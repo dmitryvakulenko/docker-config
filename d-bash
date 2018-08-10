@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -it -u www-data $1 /bin/sh

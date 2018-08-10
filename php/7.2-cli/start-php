@@ -2,6 +2,6 @@
 
 mkdir -p /home/www-data/.ssh
 cp /run/secrets/git_key /home/www-data/.ssh/id_rsa
-chown www-data:www-data -R /home/www-data/.ssh.
+chown www-data:www-data -R /home/www-data/.ssh
 
 docker-php-entrypoint "$@"

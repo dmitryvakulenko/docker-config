@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+if [ "$1" == "-r" ]; then
+    USER="root"
+    CONTAINER="$2"
+else
+    USER="www-data"
+    CONTAINER="$1"
+fi
+
+docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -it -u "$USER" "$CONTAINER" /bin/sh
