@@ -1,0 +1,25 @@
+#!/bin/zsh
+#Some shell functions to simplify working
+
+ds () {
+    if [ "$1" = "-r" ]; then
+        USER="root"
+        CONTAINER="$2"
+    else
+        USER="www-data"
+        CONTAINER="$1"
+    fi
+
+    docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -it -u "$USER" "$CONTAINER" /bin/sh
+}
+
+dup () {
+    if [ "$1" != "" ]; then
+        CONTAINER="$1"
+    else
+        CONTAINER=
+    fi;
+    docker-compose up --build ${CONTAINER}
+}
+
+alias dps='docker ps --format="table {{.ID}}\t{{.Names}}\t{{.Status}}"'
