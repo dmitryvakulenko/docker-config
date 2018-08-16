@@ -19,7 +19,13 @@ dup () {
     else
         CONTAINER=
     fi;
-    docker-compose up --build ${CONTAINER}
+    docker-compose up -d --build ${CONTAINER}
 }
+
+ddown () {
+    docker-compose down
+}
+
+
 
 alias dps='docker ps --format="table {{.ID}}\t{{.Names}}\t{{.Status}}"'
