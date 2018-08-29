@@ -26,6 +26,23 @@ ddown () {
     docker-compose down
 }
 
+dstart () {
+    if [ "$1" != "" ]; then
+        CONTAINER="$1"
+    else
+        CONTAINER=
+    fi;
+    docker-compose start ${CONTAINER}
+}
+
+dstop () {
+    if [ "$1" != "" ]; then
+        CONTAINER="$1"
+    else
+        CONTAINER=
+    fi;
+    docker-compose stop ${CONTAINER}
+}
 
 
 alias dps='docker ps --format="table {{.ID}}\t{{.Names}}\t{{.Status}}"'
