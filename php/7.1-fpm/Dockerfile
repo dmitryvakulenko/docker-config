@@ -2,17 +2,22 @@ FROM php:7.1-fpm-alpine
 
 MAINTAINER Dmitry Vakulenko
 
-RUN apk update \
-    && apk add -q postgresql-dev libpng-dev libjpeg-turbo-dev curl-dev libxml2-dev icu-dev gettext-dev php7-dev libmcrypt-dev libc-dev make gcc git \
-    && docker-php-ext-install pdo pdo_pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext \
-    && pecl install redis xdebug mongodb mcrypt-1.0.1 \
-    && docker-php-ext-enable redis xdebug mongodb \
-    && apk del -q postgresql-dev libpng-dev libjpeg-turbo-dev curl-dev libxml2-dev icu-dev gettext-dev php7-dev libmcrypt-dev make gcc libc-dev \
-    && apk add libpng libjpeg libpq libintl icu-libs openssh \
+COPY ssl.patch /tmp/ssl.patch
+RUN apk --no-cache add -q git libpng libjpeg libpq libintl icu-libs openssh libmcrypt \
+    && apk --no-cache add --virtual build-dependencies -q postgresql-dev libpng-dev libjpeg-turbo-dev curl-dev libxml2-dev icu-dev gettext-dev php7-dev libmcrypt-dev musl-dev make gcc tzdata \
+    && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && echo "Europe/Moscow" > /etc/timezone \
+    && docker-php-ext-install pdo pdo_pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext mcrypt \
+    && pecl install redis xdebug \
+    && cd /tmp; pecl download mongodb && tar xvzf mongodb-1.5.2.tgz && cd mongodb-1.5.2/src/libmongoc && patch -p1 < /tmp/ssl.patch \
+    && cd  ../../ && phpize && ./configure && make && make install \
+    && docker-php-ext-enable redis xdebug mongodb mcrypt \
+    && rm /tmp/ssl.patch && rm /tmp/mongodb-1.5.2.tgz && rm -R /tmp/mongodb-1.5.2 && rm -R /tmp/pear \
+    && apk del --purge -r build-dependencies \
+    # composer
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && chown -R www-data:www-data /usr/local/bin/composer \
-    && mkdir -p /var/www/.composer \
-    && chown -R www-data:www-data /var/www/.composer
+    && mkdir -p /home/www-data/.composer \
+    && chown -R www-data:www-data /home/www-data/.composer
 
 COPY www.conf /usr/local/etc/php-fpm.d/
 COPY php.ini /usr/local/etc/php/
