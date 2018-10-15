@@ -1,0 +1,51 @@
+From 7f1f2f9688d6ca75d99235ccfac3693f281fe2c9 Mon Sep 17 00:00:00 2001
+From: Jeroen <jeroenooms@gmail.com>
+Date: Thu, 9 Aug 2018 17:34:30 +0200
+Subject: [PATCH] Fix for LibreSSL 2.7 LibreSSL version 2.7.0 and up use the
+ OpenSSL 1.1 API See also: https://wiki.freebsd.org/LibreSSL
+
+---
+ src/libmongoc/src/mongoc/mongoc-crypto-openssl.c         | 2 +-
+ src/libmongoc/src/mongoc/mongoc-stream-tls-openssl-bio.c | 2 +-
+ src/libmongoc/src/mongoc/mongoc-stream-tls-openssl.c     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/libmongoc/src/mongoc/mongoc-crypto-openssl.c b/src/libmongoc/src/mongoc/mongoc-crypto-openssl.c
+index 6e4f7587e..476f0b6ce 100644
+--- a/src/libmongoc/src/mongoc/mongoc-crypto-openssl.c
++++ b/src/libmongoc/src/mongoc/mongoc-crypto-openssl.c
+@@ -38,7 +38,7 @@ mongoc_crypto_openssl_hmac_sha1 (mongoc_crypto_t *crypto,
+    HMAC (EVP_sha1 (), key, key_len, data, data_len, hmac_out, NULL);
+ }
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
++#if OPENSSL_VERSION_NUMBER < 0x10100000L || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L)
+ EVP_MD_CTX *
+ EVP_MD_CTX_new (void)
+ {
+diff --git a/src/libmongoc/src/mongoc/mongoc-stream-tls-openssl-bio.c b/src/libmongoc/src/mongoc/mongoc-stream-tls-openssl-bio.c
+index 59aa4f02a..f79232a16 100644
+--- a/src/libmongoc/src/mongoc/mongoc-stream-tls-openssl-bio.c
++++ b/src/libmongoc/src/mongoc/mongoc-stream-tls-openssl-bio.c
+@@ -39,7 +39,7 @@
+ #define MONGOC_LOG_DOMAIN "stream-tls-openssl-bio"
+ 
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
++#if OPENSSL_VERSION_NUMBER < 0x10100000L || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L)
+ 
+ /* Magic vtable to make our BIO shim */
+ static BIO_METHOD gMongocStreamTlsOpenSslRawMethods = {
+diff --git a/src/libmongoc/src/mongoc/mongoc-stream-tls-openssl.c b/src/libmongoc/src/mongoc/mongoc-stream-tls-openssl.c
+index ecfcfa306..9e2694dd4 100644
+--- a/src/libmongoc/src/mongoc/mongoc-stream-tls-openssl.c
++++ b/src/libmongoc/src/mongoc/mongoc-stream-tls-openssl.c
+@@ -45,7 +45,7 @@
+ 
+ #define MONGOC_STREAM_TLS_OPENSSL_BUFFER_SIZE 4096
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
++#if OPENSSL_VERSION_NUMBER < 0x10100000L || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L)
+ static void
+ BIO_meth_free (BIO_METHOD *meth)
+ {

@@ -23,7 +23,12 @@ dup () {
 }
 
 ddown () {
-    docker-compose down
+    if [ "$1" != "" ]; then
+        CONTAINER="$1"
+    else
+        CONTAINER=
+    fi;
+    docker-compose down ${CONTAINER}
 }
 
 dstart () {
