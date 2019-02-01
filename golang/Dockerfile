@@ -1,4 +1,4 @@
-FROM golang:1.11-alpine
+FROM golang:alpine
 MAINTAINER Dmitry Vakulenko
 
 RUN apk --no-cache add tini musl \
