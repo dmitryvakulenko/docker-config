@@ -10,7 +10,7 @@ ds () {
         CONTAINER="$1"
     fi
 
-    docker exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -it -u "$USER" "$CONTAINER" /bin/sh
+    docker-compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -u "$USER" "$CONTAINER" /bin/sh
 }
 
 dup () {
