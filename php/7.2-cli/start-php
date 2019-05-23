@@ -1,7 +1,8 @@
 #!/bin/sh
 
-mkdir -p /home/www-data/.ssh
-cp $SSH_KEY /home/www-data/.ssh/id_rsa
-chown www-data:www-data -R /home/www-data/.ssh
+if [ -n "$PRIVATE_KEY" ]; then
+    eval $(ssh-agent -a ${SSH_AUTH_SOCK} -s)
+    ssh-add $PRIVATE_KEY
+fi
 
 docker-php-entrypoint "$@"

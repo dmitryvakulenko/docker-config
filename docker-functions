@@ -2,15 +2,7 @@
 #Some shell functions to simplify working
 
 ds () {
-    if [ "$1" = "-r" ]; then
-        USER="root"
-        CONTAINER="$2"
-    else
-        USER="www-data"
-        CONTAINER="$1"
-    fi
-
-    docker-compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" -u "$USER" "$CONTAINER" /bin/sh
+    docker-compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" "$1" /bin/sh
 }
 
 dup () {
