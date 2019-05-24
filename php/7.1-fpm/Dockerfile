@@ -9,7 +9,7 @@ RUN apk --no-cache add -q git libpng libjpeg libpq libintl icu-libs openssh libm
     && pecl install redis xdebug \
     && cd /tmp; pecl download mongodb && tar xzf mongodb-1.5.3.tgz && cd mongodb-1.5.3/src/libmongoc \
     && cd  ../../ && phpize && ./configure && make && make install \
-    && docker-php-ext-enable redis xdebug \
+    && docker-php-ext-enable redis xdebug mongodb \
     && rm /tmp/mongodb-1.5.3.tgz && rm -R /tmp/mongodb-1.5.3 && rm -R /tmp/pear \
     && apk del --purge -r build-dependencies \
     # composer
