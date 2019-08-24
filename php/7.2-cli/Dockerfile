@@ -5,7 +5,7 @@ MAINTAINER Dmitry Vakulenko
 RUN apk --no-cache add -q git libpng libjpeg libpq libintl icu-libs openssh libmcrypt libzip \
     && apk --no-cache add --virtual build-dependencies -q postgresql-dev libpng-dev libjpeg-turbo-dev curl-dev libxml2-dev icu-dev gettext-dev php7-dev libmcrypt-dev musl-dev make gcc tzdata libzip-dev \
     && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && echo "Europe/Moscow" > /etc/timezone \
-    && docker-php-ext-install pdo pdo_pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext \
+    && docker-php-ext-install pdo pdo_pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext sockets \
     && yes '' | pecl install redis xdebug mcrypt-1.0.2 mongodb \
     && docker-php-ext-enable redis xdebug mongodb mcrypt mongodb \
     && apk del --purge -r build-dependencies \
