@@ -1,4 +1,4 @@
-FROM php:7.2-cli-alpine
+FROM php:7.2-cli-alpine3.9
 
 MAINTAINER Dmitry Vakulenko
 
