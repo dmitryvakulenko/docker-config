@@ -1,4 +1,4 @@
-FROM php:7.2-cli-alpine3.9
+FROM php:7.2-zts-alpine3.9
 
 MAINTAINER Dmitry Vakulenko
 
@@ -7,7 +7,12 @@ RUN apk --no-cache add -q git libpng libjpeg libpq libintl icu-libs openssh libm
     && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && echo "Europe/Moscow" > /etc/timezone \
     && docker-php-ext-install pdo pdo_pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext sockets \
     && yes '' | pecl install redis xdebug mcrypt-1.0.2 mongodb \
-    && docker-php-ext-enable redis xdebug mongodb mcrypt mongodb \
+# pthreads
+    && git clone https://github.com/krakjoe/pthreads -b master /tmp/pthreads \
+    && docker-php-ext-configure /tmp/pthreads --enable-pthreads \
+    && docker-php-ext-install /tmp/pthreads \
+    && docker-php-ext-enable redis xdebug mongodb mcrypt mongodb pthreads \
+    && rm -R /tmp/pthreads \
     && apk del --purge -r build-dependencies \
     # composer
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
