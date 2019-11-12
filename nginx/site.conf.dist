@@ -6,7 +6,7 @@ upstream php-fpm
 server {
 	listen 80;
 
-	root /app/web;
+	root /app/${NGINX_ROOT};
 	index app_dev.php app.php;
 	server_name ${NGINX_HOST};
 

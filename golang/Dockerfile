@@ -13,7 +13,9 @@ RUN apk --no-cache add tini musl git openssh \
     && apk del --purge -r build-dependencies \
     && mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
     && git config --system url."ssh://git@git.utstech.ru".insteadOf "https://gitlab.utstech.ru" \
-    && mkdir -p ~/.ssh && echo -e "Host git.utstech.ru\n\tPort 65321" >> ~/.ssh/config && chmod go-rwx -R ~/.ssh
+    && mkdir -p ~/.ssh \
+    && echo -e "Host git.utstech.ru\n\tPort 65321" >> ~/.ssh/config && chmod go-rwx -R ~/.ssh \
+    && ssh-keyscan -p 65321 -H git.utstech.ru >> ~/.ssh/known_hosts
 
 ENV GOPRIVATE=gitlab.utstech.ru
 ENV SSH_AUTH_SOCK=/root/ssh.pid

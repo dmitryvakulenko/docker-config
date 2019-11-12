@@ -6,5 +6,5 @@ if [ -n "$PRIVATE_KEY" ]; then
     ssh-add $PRIVATE_KEY
 fi
 
-/sbin/tini -- "$@"
+exec /sbin/tini -- "$@"
 
