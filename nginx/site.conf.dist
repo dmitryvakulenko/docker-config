@@ -1,13 +1,8 @@
-upstream php-fpm
-{
-    server php:9000;
-}
-
 server {
 	listen 80;
 
 	root /app/${NGINX_ROOT};
-	index app_dev.php app.php;
+	index app_dev.php app.php index.php;
 	server_name ${NGINX_HOST};
 
 	location / {
