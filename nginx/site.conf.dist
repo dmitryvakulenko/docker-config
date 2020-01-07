@@ -1,8 +1,14 @@
+upstream php-fpm
+{
+    server ${NGINX_PHP}:9000;
+}
+
+
 server {
 	listen 80;
 
-	root /app/${NGINX_ROOT};
-	index app_dev.php app.php index.php;
+	root ${NGINX_ROOT};
+	index ${NGINX_INDEX};
 	server_name ${NGINX_HOST};
 
 	location / {
@@ -13,10 +19,10 @@ server {
 		if (-f $document_root/maintenance.html) {
 		    return 503;
 		}
-		rewrite ^(.*)$ /app_dev.php/$1;
+		rewrite ^(.*)$ /${NGINX_INDEX}/$1;
 	}
 
-    location ~ ^/(app_dev)\.php(/|$) {
+    location ~ ^/.+\.php(/|$) {
         fastcgi_pass php-fpm;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
         include fastcgi_params;
