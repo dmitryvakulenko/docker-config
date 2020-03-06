@@ -1,4 +1,4 @@
-FROM rust:1-stretch
+FROM rust:stretch
 
 RUN apt-get update && apt-get install -y \
     gdb \

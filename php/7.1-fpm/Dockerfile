@@ -15,6 +15,7 @@ RUN apk --no-cache add -q git libpng libjpeg libpq libintl icu-libs openssh libm
     && chown -R www-data:www-data /usr/local/bin/composer \
     && mkdir -p /home/www-data/.composer \
     && chown -R www-data:www-data /home/www-data/.composer
+    && git clone git@salsa.debian.org:php-team/php-defaults.git /tmp/php-defaults && mkdir -p /usr/local/php && cp /tmp/php-defaults/php-helper /usr/local/php && cp /tmp/php-defaults/phpenmod /usr/bin && rm -Rf /tmp/php-defaults
 
 ENV SSH_AUTH_SOCK=/root/ssh.pid
 COPY www.conf /usr/local/etc/php-fpm.d/
