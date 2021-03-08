@@ -1,8 +1,12 @@
 #!/bin/zsh
 #Some shell functions to simplify working
 
-ds () {
+dsh () {
     docker-compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" "$1" /bin/sh
+}
+
+dbash () {
+    docker-compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" "$1" /bin/bash
 }
 
 dup () {
