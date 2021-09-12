@@ -1,4 +1,4 @@
-FROM rust:1.50
+FROM rust:1.55
 
 RUN apt-get update && apt-get install -y \
     gdb \
