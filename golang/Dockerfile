@@ -1,11 +1,10 @@
-FROM golang:1.16-alpine
+FROM golang:1.18.3-alpine
 MAINTAINER Dmitry Vakulenko
 
 RUN apk --no-cache add tini musl git openssh bash \
     && apk --no-cache add --virtual build-dependencies git musl-dev gcc tzdata \
     && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && echo "Europe/Moscow" > /etc/timezone \
-    && go get -u github.com/go-delve/delve/cmd/dlv \
-    && cp /go/bin/dlv /usr/local/bin \
+    && go install github.com/go-delve/delve/cmd/dlv@latest \
     # clean
     && find /usr/local/go -depth -type d -name test -exec rm -rf {} \; \
     && find /usr/local/go -depth -type d -name testdata -exec rm -rf {} \; \

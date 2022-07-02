@@ -1,8 +1,7 @@
-FROM rust:1.55
+FROM rust:1.62
 
 RUN apt-get update && apt-get install -y \
     gdb \
     gdbserver \
     bash \
     && rm -rf /var/lib/apt/lists/*
-
