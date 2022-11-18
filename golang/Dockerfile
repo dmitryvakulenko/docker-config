@@ -1,4 +1,4 @@
-FROM golang:1.18.3-alpine
+FROM golang:1.19-alpine
 MAINTAINER Dmitry Vakulenko
 
 RUN apk --no-cache add tini musl git openssh bash \

@@ -2,11 +2,11 @@
 #Some shell functions to simplify working
 
 dsh () {
-    docker-compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" "$1" /bin/sh
+    docker compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" "$1" /bin/sh
 }
 
 dbash () {
-    docker-compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" "$1" /bin/bash
+    docker compose exec -e COLUMNS="`tput cols`" -e LINES="`tput lines`" "$1" /bin/bash
 }
 
 dup () {
@@ -15,7 +15,7 @@ dup () {
     else
         CONTAINER=
     fi;
-    docker-compose up -d --build ${CONTAINER}
+    docker compose up -d --build ${CONTAINER}
 }
 
 ddown () {
@@ -24,7 +24,7 @@ ddown () {
     else
         CONTAINER=
     fi;
-    docker-compose down ${CONTAINER}
+    docker compose down ${CONTAINER}
 }
 
 dstart () {
@@ -33,7 +33,7 @@ dstart () {
     else
         CONTAINER=
     fi;
-    docker-compose start ${CONTAINER}
+    docker compose start ${CONTAINER}
 }
 
 dstop () {
@@ -42,11 +42,11 @@ dstop () {
     else
         CONTAINER=
     fi;
-    docker-compose stop ${CONTAINER}
+    docker compose stop ${CONTAINER}
 }
 
 dlog () {
-    docker-compose logs $1
+    docker compose logs $1
 }
 
 
