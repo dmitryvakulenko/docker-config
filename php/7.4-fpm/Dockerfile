@@ -17,7 +17,10 @@ RUN apk --no-cache add -q git libpng libjpeg libpq libintl icu-libs openssh libm
     && chown -R www-data:www-data /home/www-data/.composer
 
 ENV SSH_AUTH_SOCK=/root/ssh.pid
+
+RUN rm -rf /usr/local/etc/php-fpm.d/*
 COPY www.conf /usr/local/etc/php-fpm.d/
+
 COPY php.ini /usr/local/etc/php/
 COPY start-php /usr/local/bin
 RUN chmod a+x /usr/local/bin/start-php
