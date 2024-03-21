@@ -1,0 +1,48 @@
+#!/bin/bash
+
+HOSTS_FILE="/etc/hosts"
+START_MARK="##### START DOCKER #####"
+END_MARK="##### END DOCKER #####"
+
+
+clear_hosts() {
+    START_LINE=$(grep -n "$START_MARK" $HOSTS_FILE | cut -d ':' -f 1)
+    END_LINE=$(grep -n "$END_MARK" $HOSTS_FILE | tail -n 1 | cut -d ':' -f 1)
+
+    if [ -z $START_LINE ] || [ -z $END_LINE ]; then
+       echo "Nothing to clear."
+       return 0
+    fi
+
+    echo "Deleting from $START_LINE to $END_LINE lines"
+    sed -i "${START_LINE},${END_LINE}d" $HOSTS_FILE
+}
+
+add_hosts() {
+    echo -e "$START_MARK" >> $HOSTS_FILE 
+    CONTAINERS=$(docker ps --format="{{.ID}}")
+    for CUR in $CONTAINERS; do
+        HOSTS=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}} {{join .DNSNames " "}}{{printf "\n"}}{{end}}' $CUR)
+        echo -e "$HOSTS" >> $HOSTS_FILE
+    done
+    echo -e "$END_MARK" >> $HOSTS_FILE
+}
+
+case "$1" in
+add)
+    echo -e "Adding hosts..."
+    add_hosts
+;;
+replace)
+    echo -e "Replacing..."
+    clear_hosts
+    add_hosts
+;;
+clear) 
+    echo "Clearing..."
+    clear_hosts
+;;
+*)
+   echo -e "Usage: docker-hosts add|replace|clear"
+esac
+
