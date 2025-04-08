@@ -1,12 +1,12 @@
-FROM php:8.1-fpm-alpine3.19
+FROM php:8.2-fpm-alpine
 
 MAINTAINER Dmitry Vakulenko
 
-ARG MCRYPT_VERSION=1.0.6
-ARG XDEBUG_VERSION=3.2.2
+ARG MCRYPT_VERSION=1.0.7
+ARG XDEBUG_VERSION=3.3.2
 
 RUN apk --no-cache add -q git libpng libjpeg libpq libintl icu-libs openssh libmcrypt imap c-client imagemagick libzip icu-data-full libgomp libsasl libldap \
-    && apk --no-cache add --virtual build-dependencies -q autoconf postgresql-dev libpng-dev libjpeg-turbo-dev curl-dev libxml2-dev icu-dev gettext-dev php81-dev libmcrypt-dev musl-dev make gcc tzdata openldap-dev imap-dev imagemagick-dev libzip-dev oniguruma-dev postgresql-dev linux-headers \
+    && apk --no-cache add --virtual build-dependencies -q autoconf postgresql-dev libpng-dev libjpeg-turbo-dev curl-dev libxml2-dev icu-dev gettext-dev php82-dev libmcrypt-dev musl-dev make gcc tzdata openldap-dev imap-dev imagemagick-dev libzip-dev oniguruma-dev postgresql-dev linux-headers \
     && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && echo "Europe/Moscow" > /etc/timezone \
     && docker-php-ext-install pdo pdo_pgsql pgsql gd pcntl curl xml mbstring soap zip dom intl bcmath gettext ldap imap exif sockets opcache \
     && yes '' | pecl install redis xdebug-${XDEBUG_VERSION} mongodb imagick mcrypt-${MCRYPT_VERSION} apcu \
