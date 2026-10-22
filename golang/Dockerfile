@@ -1,5 +1,4 @@
-FROM golang:1.24-alpine
-MAINTAINER Dmitry Vakulenko
+FROM golang:1.27-alpine
 
 RUN apk --no-cache add tini musl git openssh bash \
     && apk --no-cache add --virtual build-dependencies git musl-dev gcc tzdata \
@@ -19,7 +18,6 @@ RUN apk --no-cache add tini musl git openssh bash \
 ENV GOPRIVATE=gitlab.utstech.ru,gitlab.hbook.pro
 ENV SSH_AUTH_SOCK=/root/ssh.pid
 
-COPY start /usr/local/bin
-RUN chmod a+x /usr/local/bin/start
+COPY --chmod=711 start go-debug /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/start"]
