@@ -35,6 +35,7 @@ RUN apk --no-cache add -q \
         imap-dev \
         libzip-dev \
         krb5-dev \
+        file \
     && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime \
     && echo "Europe/Moscow" > /etc/timezone \
     && docker-php-ext-install \
